@@ -9,8 +9,7 @@
 #include <QApplication>
 //-------------------------------------
 #include "ippCustom.h"
-
-
+#include "spline.h"
 //--------------------------------------
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -32,20 +31,19 @@ private slots:
     void on_start_PBN_clicked();
 
 private:
-    static const int BUF_SIZE = 1000;
+    static const int    BUF_SIZE = 1000;
 private:
     Ui::Widget          *ui;
-
 
     QString             pathFile_input;
     QString             pathFile_output;
 
     Ipp32fc             *signal_buf;
+    double              *time_buf;
     int                 Fold_save, Fnew_save;
 
-    void log( const QString &s);
-    bool                flag_input=false;
-    bool                flag_output=false;
+    void                log( const QString &s);
+
 
 };
 #endif // WIDGET_H

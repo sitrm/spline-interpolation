@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>Spline interpolation 32fc</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
@@ -170,7 +170,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд новая, Гц</string>
+          <string>Fд new, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -193,7 +193,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд исходная, Гц</string>
+          <string>Fд old, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -250,6 +250,12 @@ QPushButton:focus {
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
   background-color: #0d6efd;
@@ -282,6 +288,9 @@ QPushButton:focus {
        </item>
        <item>
         <widget class="QProgressBar" name="info_PBR">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="styleSheet">
           <string notr="true">
 QProgressBar::chunk
@@ -303,7 +312,7 @@ background: #1D5573 ;
 </string>
          </property>
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>

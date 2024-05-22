@@ -13,6 +13,7 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
+    spline.h \
     widget.h
 
 FORMS += \
