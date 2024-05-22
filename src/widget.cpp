@@ -24,6 +24,7 @@ Widget::Widget(QWidget *parent)
     //сохранили пути на кнопках
     pathFile_input = s.value( "pathIn", QDir::homePath() ).toString();
     pathFile_output = s.value( "pathOut", QDir::homePath() ).toString();
+    //сохранили значение fд
     Fold_save = s.value("Fold_save", 44100).toInt();
     Fnew_save = s.value("Fnew_save", 22050).toInt();
 
@@ -49,32 +50,30 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget()
 {
     QSettings s;
-    //QSettings sOut;
     s.setValue( "geometry", this->saveGeometry() );
     s.setValue( "pathIn",     pathFile_input     );
     s.setValue( "pathOut",     pathFile_output  );
 
-    //получили старые значения с боксов
-    Fold_save = ui->FdOld_SBX->value();
-    Fnew_save = ui->FdNew_SBX->value();
-    //сохранили их
-    s.setValue("Fold_save", Fold_save);
-    s.setValue("Fnew_save", Fnew_save);
 
-    delete[] signal_buf;
-    signal_buf = nullptr;
+    s.setValue("Fold_save", ui->FdOld_SBX->value());
+    s.setValue("Fnew_save", ui->FdNew_SBX->value());
+
+    delete[] signal_buf;      signal_buf = nullptr;
     delete ui;
 }
 //-----------------------------------------------------------
 
 void Widget::on_input_PBN_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,"Выберите входной файл ", QFileInfo(pathFile_input).canonicalPath());
+    QString s;
+    s = QFileDialog::getOpenFileName(this,"Выберите входной файл ",
+                                                    QFileInfo(pathFile_input).canonicalPath(),
+                                                    "Все (*.*);;PCM(*.pcm)");
 
-    if( !fileName.isEmpty()){
-        log("Исходный файл '" + fileName + "' выбран");
-        ui->input_LED->setText(QDir::toNativeSeparators(fileName));
-        pathFile_input = fileName;
+    if( !s.isEmpty()){
+        log("Исходный файл '" + s + "' выбран");
+       // ui->input_LED->setText(QDir::toNativeSeparators(fileName));
+        pathFile_input = s;
         flag_input = true; // чтобы разрешить нажать кнопку
 
     }else{
@@ -89,12 +88,15 @@ void Widget::on_input_PBN_clicked()
 //-----------------------------------------------------------
 void Widget::on_output_PBN_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,"Выберите файл ", QFileInfo(pathFile_output).canonicalPath());
+    QString s;
+    s = QFileDialog::getOpenFileName(this,"Выберите выходной файл ",
+                                                    QFileInfo(pathFile_output).canonicalPath(),
+                                                    "Все (*.*);;PCM(*.pcm)");
 
-    if( !fileName.isEmpty()){
-        log("Путь выходного файла '" + fileName + "'");
-        ui->output_LED->setText(QDir::toNativeSeparators(fileName));
-        pathFile_output = fileName;
+    if( !s.isEmpty()){
+        log("Путь выходного файла '" + s + "'");
+     //   ui->output_LED->setText(QDir::toNativeSeparators(fileName));
+        pathFile_output = s;
         flag_output = true; // чтобы разрешить нажать кнопку
 
     }else{
@@ -103,7 +105,6 @@ void Widget::on_output_PBN_clicked()
     //разрешаем нажать на start
     if( !ui->input_LED->text().isEmpty()
        && !ui->output_LED->text().isEmpty()){
-
         ui->start_PBN->setEnabled(true);
     }
 }
@@ -136,13 +137,13 @@ void Widget::on_start_PBN_clicked()
         throw( "Ошибка при открытии файла с результатом"  );
         log("Ошибка при открытии файла с результатом");
     }
-    log("Исходный файл '" + ui->input_LED->text() + "' выбран");
-    log("Путь выходного файла '" + ui->output_LED->text() + "'");
 
 
     fileOutput.resize(0);
-    fileInput.seek(0);
-    ui->info_PBR->setValue(100*fileInput.pos() / fileInput.size());
+    fileInput.seek(0);//позиция в файле на начало
+
+    ui->info_PBR->setValue(100*fileInput.pos() / fileInput.size()); // progressBar
+
     log("Обработка запущена");
 
     while(!fileInput.atEnd()){
@@ -152,8 +153,9 @@ void Widget::on_start_PBN_clicked()
 
 
     fileInput.close();
-    fileOutput.close(); //
-    ui->input_PBN->setEnabled(true); // после обработки можно выбрать файл повторно
+    fileOutput.close();
+    // после обработки разрешаем нажимать на кнопки
+    ui->input_PBN->setEnabled(true);
     ui->output_PBN->setEnabled(true);
     ui->FdNew_SBX->setEnabled(false);
     ui->FdNew_SL->setEnabled(false);

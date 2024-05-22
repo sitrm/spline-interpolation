@@ -35,9 +35,11 @@ private:
     static const int BUF_SIZE = 1000;
 private:
     Ui::Widget          *ui;
-    QString             fileName;
+
+
     QString             pathFile_input;
     QString             pathFile_output;
+
     Ipp32fc             *signal_buf;
     int                 Fold_save, Fnew_save;
 

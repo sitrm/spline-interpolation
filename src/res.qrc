@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../res/icon.png</file>
+        <file>../res/icons8-opened-folder-94.png</file>
+        <file>../res/start_5243423.png</file>
+    </qresource>
+</RCC>

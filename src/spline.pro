@@ -23,3 +23,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 include(../Intel_LIBS/ipp.pri)
+
+
+RC_ICONS = ../res/icon.ico
+
+RESOURCES += \
+    res.qrc

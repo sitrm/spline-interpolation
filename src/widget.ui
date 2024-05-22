@@ -118,8 +118,14 @@ QPushButton:focus {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../res/folder_icon_129075.png</normaloff>../res/folder_icon_129075.png</iconset>
+          <iconset resource="res.qrc">
+           <normaloff>:/res/icons8-opened-folder-94.png</normaloff>:/res/icons8-opened-folder-94.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -146,8 +152,8 @@ QPushButton:focus {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../res/folder_icon_129075.png</normaloff>../res/folder_icon_129075.png</iconset>
+          <iconset resource="res.qrc">
+           <normaloff>:/res/icons8-opened-folder-94.png</normaloff>:/res/icons8-opened-folder-94.png</iconset>
          </property>
         </widget>
        </item>
@@ -264,6 +270,12 @@ QPushButton:focus {
            <property name="text">
             <string>start</string>
            </property>
+           <property name="iconSize">
+            <size>
+             <width>38</width>
+             <height>20</height>
+            </size>
+           </property>
           </widget>
          </item>
         </layout>
@@ -318,7 +330,9 @@ padding: 5px 15px;
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>FdOld_SL</sender>
