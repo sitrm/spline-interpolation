@@ -170,7 +170,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд new, Hz</string>
+          <string>Sample rate new, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -193,7 +193,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд old, Hz</string>
+          <string>Sample rate old, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

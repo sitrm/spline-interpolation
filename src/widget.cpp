@@ -93,9 +93,9 @@ void Widget::on_output_PBN_clicked()
 {
     QString s;
     s = QFileDialog::getOpenFileName(this,"Выберите выходной файл ",
-                                                    QFileInfo(pathFile_output).canonicalPath(),
+                                                    pathFile_output,
                                                     "Все (*.*);;PCM(*.pcm)");
-
+//QFileInfo(pathFile_output).canonicalPath()
     if( !s.isEmpty()){
         log("Путь выходного файла '" + s + "'");
         ui->output_LED->setText(QDir::toNativeSeparators(s));
@@ -147,7 +147,7 @@ void Widget::on_start_PBN_clicked()
 
     ui->info_PBR->setValue(100*fileInput.pos() / fileInput.size()); // progressBar
 
-    log("Обработка запущена");
+    log("Обработка запущена...");
     //-------------
     int size_block;             // размер блока
     int reed_block_count = 0;  //колво считанный блоков
@@ -163,7 +163,7 @@ void Widget::on_start_PBN_clicked()
 
         size_block = fileInput.read((char*)signal_buf, sizeof(Ipp32fc)*BUF_SIZE);
         size_block /= sizeof(Ipp32fc);
-        for(size_t i = 0; i < size_block; i++){
+        for(int i = 0; i < size_block; i++){
             time_buf[i] = (i+(BUF_SIZE)*reed_block_count)/ SRold; // временные отметки для сигнала
         }
 
@@ -171,7 +171,7 @@ void Widget::on_start_PBN_clicked()
         std::vector<double> RE; //деййствительная часть сигнала
         std::vector<double> IM; //мнимая часть сигнала
 
-        for(size_t i = 0; i < size_block; i++){
+        for(int i = 0; i < size_block; i++){
             X.push_back(time_buf [i]);
             RE.push_back(signal_buf[i].re);
             IM.push_back(signal_buf[i].im);
@@ -180,13 +180,15 @@ void Widget::on_start_PBN_clicked()
         tk::spline s_re(X,RE);
         tk::spline s_im(X,IM);
 
-        if(fileInput.pos() != fileInput.size())
+        if(fileInput.pos() != fileInput.size()) // проверяем достигнут ли конец
         {
-            fileInput.seek(fileInput.pos()-sizeof(Ipp32fc));
+            fileInput.seek(fileInput.pos()-sizeof(Ipp32fc)); // сдвигаем позицию в файле и сдвигаем на один элемент
+                                                        //чтобы избежать повторного чтения последних данных в следующем блоке
         }
-        reed_block_count++;
+        reed_block_count++;  // плюс считанный блок
+       // qDebug() << reed_block_count;
 
-        while ((n+ccount)/SRnew < time_buf[size_block-1])
+        while ((n+ccount)/SRnew < time_buf[size_block-1])   // цикл интерполяции
         {
             if((n+ccount)/SRnew < time_buf[m])
             {
@@ -201,12 +203,16 @@ void Widget::on_start_PBN_clicked()
                 new_signal[0].im = s_im((n+ccount)/SRnew);
                 fileOutput.write((char*)new_signal,sizeof(Ipp32fc));
             }
+
+            // Увеличиваются индексы для сглаживания и временного отсчета
             count++;
             n++;
         }
+        //обновляем для след цикла
         ccount = count;
         n = 0; m = 0;
         ui->info_PBR->setValue(100*fileInput.pos()/fileInput.size());
+
         X.clear();
         RE.clear();
         IM.clear();
@@ -214,7 +220,7 @@ void Widget::on_start_PBN_clicked()
 
 
     fileInput.close();
-   // fileOutput.close();
+    fileOutput.close();
     // после обработки разрешаем нажимать на кнопки
     ui->input_PBN->setEnabled(true);
     ui->output_PBN->setEnabled(true);

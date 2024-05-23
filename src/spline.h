@@ -1,6 +1,6 @@
 #ifndef SPLINE_H
 #define SPLINE_H
-//-------------------------------------------------
+//----------------------------------------------------------------------------
 #include <cstdio>
 #include <cassert>
 #include <cmath>
@@ -10,14 +10,14 @@
 #include <sstream>
 #include <string>
 #endif // HAVE_SSTREAM
-
+//----------------------------------------------------------------------------
 // not ideal but disable unused-function warnings
 // (we get them because we have implementations in the header file,
 // and this is because we want to be able to quickly separate them
 // into a cpp file if necessary)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
-
+//----------------------------------------------------------------------------
 // unnamed namespace only because the implementation is in this
 // header file and we don't want to export symbols to the obj files
 namespace
@@ -27,6 +27,7 @@ namespace tk
 {
 
 // spline interpolation
+//----------------------------------------------------------------------------
 class spline
 {
 public:
@@ -37,12 +38,12 @@ public:
         cspline_hermite = 31    // cubic hermite splines (local, only C^1)
     };
 
-    // boundary condition type for the spline end-points
+    // boundary condition type for the spline end-points гр усл
     enum bd_type {
-        first_deriv = 1,
-        second_deriv = 2
+        first_deriv = 1,  // первая производная
+        second_deriv = 2  //вторая производная
     };
-
+//----------------------------------------------------------------------------
 protected:
     std::vector<double> m_x,m_y;            // x,y coordinates of points
     // interpolation parameters
@@ -56,7 +57,7 @@ protected:
     bool m_made_monotonic;
     void set_coeffs_from_b();               // calculate c_i, d_i from b_i
     size_t find_closest(double x) const;    // closest idx so that m_x[idx]<=x
-
+//----------------------------------------------------------------------------
 public:
     // default constructor: set boundary condition to be zero curvature
     // at both ends, i.e. natural splines
@@ -120,16 +121,19 @@ public:
 };
 
 
-
+//----------------------------------------------------------------------------
 namespace internal
 {
 
 // band matrix solver
+//----------------------------------------------------------------------------
 class band_matrix
 {
 private:
     std::vector< std::vector<double> > m_upper;  // upper band
     std::vector< std::vector<double> > m_lower;  // lower band
+
+//----------------------------------------------------------------------------
 public:
     band_matrix() {};                             // constructor
     band_matrix(int dim, int n_u, int n_l);       // constructor
@@ -159,7 +163,7 @@ public:
 };
 
 } // namespace internal
-
+//----------------------------------------------------------------------------
 
 
 
@@ -180,7 +184,7 @@ void spline::set_boundary(spline::bd_type left, double left_value,
     m_right_value=right_value;
 }
 
-
+//----------------------------------------------------------------------------
 void spline::set_coeffs_from_b()
 {
     assert(m_x.size()==m_y.size());
@@ -204,6 +208,7 @@ void spline::set_coeffs_from_b()
     m_c0 = (m_left==first_deriv) ? 0.0 : m_c[0];
 }
 
+//----------------------------------------------------------------------------
 void spline::set_points(const std::vector<double>& x,
                         const std::vector<double>& y,
                         spline_type type)
@@ -345,7 +350,7 @@ void spline::set_points(const std::vector<double>& x,
     // for left extrapolation coefficients
     m_c0 = (m_left==first_deriv) ? 0.0 : m_c[0];
 }
-
+//----------------------------------------------------------------------------
 bool spline::make_monotonic()
 {
     assert(m_x.size()==m_y.size());
@@ -395,7 +400,7 @@ bool spline::make_monotonic()
 
     return modified;
 }
-
+//----------------------------------------------------------------------------
 // return the closest idx so that m_x[idx] <= x (return 0 if x<m_x[0])
 size_t spline::find_closest(double x) const
 {
@@ -404,7 +409,7 @@ size_t spline::find_closest(double x) const
     size_t idx = std::max( int(it-m_x.begin())-1, 0);   // m_x[idx] <= x
     return idx;
 }
-
+//----------------------------------------------------------------------------
 double spline::operator() (double x) const
 {
     // polynomial evaluation using Horner's scheme
@@ -429,7 +434,7 @@ double spline::operator() (double x) const
     }
     return interpol;
 }
-
+//----------------------------------------------------------------------------
 double spline::deriv(int order, double x) const
 {
     assert(order>0);
@@ -483,7 +488,7 @@ double spline::deriv(int order, double x) const
     }
     return interpol;
 }
-
+//----------------------------------------------------------------------------
 #ifdef HAVE_SSTREAM
 std::string spline::info() const
 {
@@ -497,13 +502,13 @@ std::string spline::info() const
     return ss.str();
 }
 #endif // HAVE_SSTREAM
-
+//----------------------------------------------------------------------------
 
 namespace internal
 {
 
 // band_matrix implementation
-// -------------------------
+//----------------------------------------------------------------------------
 
 band_matrix::band_matrix(int dim, int n_u, int n_l)
 {
@@ -523,6 +528,7 @@ void band_matrix::resize(int dim, int n_u, int n_l)
         m_lower[i].resize(dim);
     }
 }
+//----------------------------------------------------------------------------
 int band_matrix::dim() const
 {
     if(m_upper.size()>0) {
@@ -532,7 +538,7 @@ int band_matrix::dim() const
     }
 }
 
-
+//----------------------------------------------------------------------------
 // defines the new operator (), so that we can access the elements
 // by A(i,j), index going from i=0,...,dim()-1
 double & band_matrix::operator () (int i, int j)
@@ -544,6 +550,8 @@ double & band_matrix::operator () (int i, int j)
     if(k>=0)    return m_upper[k][i];
     else        return m_lower[-k][i];
 }
+
+//----------------------------------------------------------------------------
 double band_matrix::operator () (int i, int j) const
 {
     int k=j-i;       // what band is the entry
@@ -553,18 +561,23 @@ double band_matrix::operator () (int i, int j) const
     if(k>=0)    return m_upper[k][i];
     else        return m_lower[-k][i];
 }
+
+//----------------------------------------------------------------------------
 // second diag (used in LU decomposition), saved in m_lower
 double band_matrix::saved_diag(int i) const
 {
     assert( (i>=0) && (i<dim()) );
     return m_lower[0][i];
 }
+
+//----------------------------------------------------------------------------
 double & band_matrix::saved_diag(int i)
 {
     assert( (i>=0) && (i<dim()) );
     return m_lower[0][i];
 }
 
+//----------------------------------------------------------------------------
 // LR-Decomposition of a band matrix
 void band_matrix::lu_decompose()
 {
@@ -600,6 +613,8 @@ void band_matrix::lu_decompose()
         }
     }
 }
+
+//----------------------------------------------------------------------------
 // solves Ly=b
 std::vector<double> band_matrix::l_solve(const std::vector<double>& b) const
 {
@@ -615,6 +630,8 @@ std::vector<double> band_matrix::l_solve(const std::vector<double>& b) const
     }
     return x;
 }
+
+//----------------------------------------------------------------------------
 // solves Rx=y
 std::vector<double> band_matrix::r_solve(const std::vector<double>& b) const
 {
@@ -630,7 +647,7 @@ std::vector<double> band_matrix::r_solve(const std::vector<double>& b) const
     }
     return x;
 }
-
+//----------------------------------------------------------------------------
 std::vector<double> band_matrix::lu_solve(const std::vector<double>& b,
         bool is_lu_decomposed)
 {
@@ -651,8 +668,7 @@ std::vector<double> band_matrix::lu_solve(const std::vector<double>& b,
 
 
 } // namespace
-
+//----------------------------------------------------------------------------
 #pragma GCC diagnostic pop
-
-
+//----------------------------------------------------------------------------
 #endif // SPLINE_H
