@@ -15,8 +15,13 @@
 
 - Qt Framework
 - Библиотека Intel IPP
-Для скачивания библиотеки Intel IPP, посетите сайт [](https://archive.org/details/intel-ipp).
-Или GitHub [](https://github.com/A-Izv/Intel_LIBS) 
+Необходимо скачать библиотекy [ Intel IPP ](https://archive.org/details/intel-ipp)
+([GitHub](https://github.com/A-Izv/Intel_LIBS))
+Каталог бибилотеки должен располагаться на одном уровне с проектом
+- src
+- res
+- Intel_LIBS
+  - ipp.pri 
 
 ## Структура проекта
 
