@@ -57,11 +57,11 @@ Widget::~Widget()
     s.setValue( "pathOut",     pathFile_output   );
 
 
-    s.setValue("Fold_save", ui->FdOld_SBX->value());
-    s.setValue("Fnew_save", ui->FdNew_SBX->value());
+    s.setValue("Fold_save",    ui->FdOld_SBX->value());
+    s.setValue("Fnew_save",    ui->FdNew_SBX->value());
 
-    delete[] signal_buf;      signal_buf = nullptr;
-    delete[] time_buf;        time_buf = nullptr;
+    delete[] signal_buf;       signal_buf = nullptr;
+    delete[] time_buf;         time_buf = nullptr;
     delete ui;
 }
 //-----------------------------------------------------------
@@ -77,11 +77,10 @@ void Widget::on_input_PBN_clicked()
         log("Исходный файл '" + s + "' выбран");
         ui->input_LED->setText(QDir::toNativeSeparators(s));
         pathFile_input = s;
-
-
     }else{
         log("Файл не выбран!");
     }
+
     //разрешаем нажать на start
     if(!ui->input_LED->text().isEmpty()   // проверяем еще на пустоту строк в LineEdit
        && !ui->output_LED->text().isEmpty()){
@@ -95,16 +94,15 @@ void Widget::on_output_PBN_clicked()
     s = QFileDialog::getSaveFileName(this,"Выберите выходной файл ",
                                                     pathFile_output,
                                                     "Все (*.*);;PCM(*.pcm)");
-//QFileInfo(pathFile_output).canonicalPath()
+
     if( !s.isEmpty()){
         log("Путь выходного файла '" + s + "'");
         ui->output_LED->setText(QDir::toNativeSeparators(s));
         pathFile_output = s;
-
-
     }else{
         log("Файл не выбран!");
     }
+
     //разрешаем нажать на start
     if( !ui->input_LED->text().isEmpty()
        && !ui->output_LED->text().isEmpty()){
@@ -148,10 +146,9 @@ void Widget::on_start_PBN_clicked()
     ui->info_PBR->setValue(100*fileInput.pos() / fileInput.size()); // progressBar
 
     log("Обработка запущена...");
-    //-------------
+    //----------------------
     int size_block;             // размер блока
     int reed_block_count = 0;  //колво считанный блоков
-    //temp
     int count = 0;
     int ccount = 0;
     int n = 0;
@@ -168,8 +165,8 @@ void Widget::on_start_PBN_clicked()
         }
 
         std::vector<double> X;  // время
-        std::vector<double> RE; //деййствительная часть сигнала
-        std::vector<double> IM; //мнимая часть сигнала
+        std::vector<double> RE; // действительная часть сигнала
+        std::vector<double> IM; // мнимая часть сигнала
 
         for(int i = 0; i < size_block; i++){
             X.push_back(time_buf [i]);
@@ -186,7 +183,6 @@ void Widget::on_start_PBN_clicked()
                                                         //чтобы избежать повторного чтения последних данных в следующем блоке
         }
         reed_block_count++;  // плюс считанный блок
-       // qDebug() << reed_block_count;
 
         while ((n+ccount)/SRnew < time_buf[size_block-1])   // цикл интерполяции
         {
@@ -203,7 +199,6 @@ void Widget::on_start_PBN_clicked()
                 new_signal[0].im = s_im((n+ccount)/SRnew);
                 fileOutput.write((char*)new_signal,sizeof(Ipp32fc));
             }
-
             // Увеличиваются индексы для сглаживания и временного отсчета
             count++;
             n++;
@@ -228,7 +223,7 @@ void Widget::on_start_PBN_clicked()
     ui->FdNew_SL->setEnabled(true);
     ui->FdOld_SBX->setEnabled(true);
     ui->FdOld_SL->setEnabled(true);
-    log("Обработка завершена успешно");
+    log("Обработка завершена успешно!");
 }
 //-----------------------------------------------------------
 
