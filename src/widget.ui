@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>Spline interpolation 32fc</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
@@ -118,8 +118,14 @@ QPushButton:focus {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../res/folder_icon_129075.png</normaloff>../res/folder_icon_129075.png</iconset>
+          <iconset resource="res.qrc">
+           <normaloff>:/res/icons8-opened-folder-94.png</normaloff>:/res/icons8-opened-folder-94.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -146,8 +152,8 @@ QPushButton:focus {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>../res/folder_icon_129075.png</normaloff>../res/folder_icon_129075.png</iconset>
+          <iconset resource="res.qrc">
+           <normaloff>:/res/icons8-opened-folder-94.png</normaloff>:/res/icons8-opened-folder-94.png</iconset>
          </property>
         </widget>
        </item>
@@ -164,7 +170,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд новая, Гц</string>
+          <string>Sample rate new, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -187,7 +193,7 @@ QPushButton:focus {
 }</string>
          </property>
          <property name="text">
-          <string>Fд исходная, Гц</string>
+          <string>Sample rate old, Hz</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -196,8 +202,11 @@ QPushButton:focus {
        </item>
        <item row="1" column="2">
         <widget class="QSlider" name="FdNew_SL">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
-          <number>1000000</number>
+          <number>100000</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -222,8 +231,11 @@ QPushButton:focus {
        </item>
        <item row="0" column="2">
         <widget class="QSlider" name="FdOld_SL">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
-          <number>1000000</number>
+          <number>100000</number>
          </property>
          <property name="pageStep">
           <number>1</number>
@@ -243,6 +255,12 @@ QPushButton:focus {
           <widget class="QPushButton" name="start_PBN">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
@@ -264,12 +282,21 @@ QPushButton:focus {
            <property name="text">
             <string>start</string>
            </property>
+           <property name="iconSize">
+            <size>
+             <width>38</width>
+             <height>20</height>
+            </size>
+           </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
         <widget class="QProgressBar" name="info_PBR">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="styleSheet">
           <string notr="true">
 QProgressBar::chunk
@@ -291,7 +318,7 @@ background: #1D5573 ;
 </string>
          </property>
          <property name="value">
-          <number>24</number>
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -318,7 +345,9 @@ padding: 5px 15px;
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>FdOld_SL</sender>

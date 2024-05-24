@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "spline.h"
 #include <QApplication>
 //Изменение частоты дискретизации комплексного 32-х разрядного сигнала float методом сплайн интерполяции
 
