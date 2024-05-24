@@ -25,9 +25,7 @@ public:
 
 private slots:
     void on_input_PBN_clicked();
-
     void on_output_PBN_clicked();
-
     void on_start_PBN_clicked();
 
 private:
