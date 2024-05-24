@@ -202,8 +202,11 @@ QPushButton:focus {
        </item>
        <item row="1" column="2">
         <widget class="QSlider" name="FdNew_SL">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
-          <number>1000000</number>
+          <number>100000</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -228,8 +231,11 @@ QPushButton:focus {
        </item>
        <item row="0" column="2">
         <widget class="QSlider" name="FdOld_SL">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
-          <number>1000000</number>
+          <number>100000</number>
          </property>
          <property name="pageStep">
           <number>1</number>

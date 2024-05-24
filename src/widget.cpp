@@ -21,7 +21,7 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     signal_buf = new Ipp32fc [BUF_SIZE]; // немедленно
-    time_buf = new double [BUF_SIZE];
+    time_buf   = new double [BUF_SIZE];
 
     QSettings s;
 
@@ -52,8 +52,8 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget()
 {
     QSettings s;
-    s.setValue( "geometry", this->saveGeometry() );
-    s.setValue( "pathIn",     pathFile_input     );
+    s.setValue( "geometry",    this->saveGeometry() );
+    s.setValue( "pathIn",      pathFile_input     );
     s.setValue( "pathOut",     pathFile_output   );
 
 
@@ -92,7 +92,7 @@ void Widget::on_input_PBN_clicked()
 void Widget::on_output_PBN_clicked()
 {
     QString s;
-    s = QFileDialog::getOpenFileName(this,"Выберите выходной файл ",
+    s = QFileDialog::getSaveFileName(this,"Выберите выходной файл ",
                                                     pathFile_output,
                                                     "Все (*.*);;PCM(*.pcm)");
 //QFileInfo(pathFile_output).canonicalPath()

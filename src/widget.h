@@ -31,7 +31,7 @@ private slots:
     void on_start_PBN_clicked();
 
 private:
-    static const int    BUF_SIZE = 1000;
+    static const int    BUF_SIZE = 100000;
 private:
     Ui::Widget          *ui;
 
