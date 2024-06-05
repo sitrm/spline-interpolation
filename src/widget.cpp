@@ -161,7 +161,7 @@ void Widget::on_start_PBN_clicked()
         size_block = fileInput.read((char*)signal_buf, sizeof(Ipp32fc)*BUF_SIZE);
         size_block /= sizeof(Ipp32fc);
         for(int i = 0; i < size_block; i++){
-            time_buf[i] = (i+(BUF_SIZE)*reed_block_count)/ SRold; // временные отметки для сигнала
+            time_buf[i] = (i+(BUF_SIZE-1)*reed_block_count)/ SRold; // временные отметки для сигнала
         }
 
         std::vector<double> X;  // время
