@@ -186,19 +186,10 @@ void Widget::on_start_PBN_clicked()
 
         while ((n+ccount)/SRnew < time_buf[size_block-1])   // цикл интерполяции
         {
-            if((n+ccount)/SRnew < time_buf[m])
-            {
-                new_signal[0].re = s_re((n+ccount)/SRnew);
-                new_signal[0].im = s_im((n+ccount)/SRnew);
-                fileOutput.write((char*)new_signal,sizeof(Ipp32fc));
-            }
-            else
-            {
-                m++;
-                new_signal[0].re = s_re((n+ccount)/SRnew);
-                new_signal[0].im = s_im((n+ccount)/SRnew);
-                fileOutput.write((char*)new_signal,sizeof(Ipp32fc));
-            }
+
+            new_signal[0].re = s_re((n+ccount)/SRnew);
+            new_signal[0].im = s_im((n+ccount)/SRnew);
+            fileOutput.write((char*)new_signal,sizeof(Ipp32fc));
             // Увеличиваются индексы для сглаживания и временного отсчета
             count++;
             n++;
@@ -214,8 +205,8 @@ void Widget::on_start_PBN_clicked()
     }
 
 
-    fileInput.close();
-    fileOutput.close();
+//    fileInput.close();
+//    fileOutput.close();
     // после обработки разрешаем нажимать на кнопки
     ui->input_PBN->setEnabled(true);
     ui->output_PBN->setEnabled(true);
