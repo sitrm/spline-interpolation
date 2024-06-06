@@ -37,6 +37,7 @@ private:
     QString             pathFile_output;
 
     Ipp32fc             *signal_buf;
+    Ipp32fc             *signal_buf_c;
     double              *time_buf;
     int                 Fold_save, Fnew_save;
 
