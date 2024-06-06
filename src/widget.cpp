@@ -24,6 +24,8 @@ Widget::Widget(QWidget *parent)
     signal_buf_c = new Ipp32fc [BUF_SIZE];
     time_buf   = new double [BUF_SIZE];
 
+
+
     QSettings s;
 
     this->restoreGeometry(s.value("geometry").toByteArray());
