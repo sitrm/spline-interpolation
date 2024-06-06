@@ -21,6 +21,7 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     signal_buf = new Ipp32fc [BUF_SIZE]; // немедленно
+    signal_buf_c = new Ipp32fc [BUF_SIZE];
     time_buf   = new double [BUF_SIZE];
 
     QSettings s;
@@ -170,8 +171,8 @@ void Widget::on_start_PBN_clicked()
 
         for(int i = 0; i < size_block; i++){
             X.push_back(time_buf [i]);
-            RE.push_back(signal_buf[i].re);
-            IM.push_back(signal_buf[i].im);
+            RE.push_back(double(signal_buf[i].re));
+            IM.push_back(double(signal_buf[i].im));   // + double
         }
 
         tk::spline s_re(X,RE);
@@ -203,10 +204,11 @@ void Widget::on_start_PBN_clicked()
         RE.clear();
         IM.clear();
     }
+   // qApp->processEvents();  //?????
 
 
-//    fileInput.close();
-//    fileOutput.close();
+    fileInput.close();
+    fileOutput.close();
     // после обработки разрешаем нажимать на кнопки
     ui->input_PBN->setEnabled(true);
     ui->output_PBN->setEnabled(true);

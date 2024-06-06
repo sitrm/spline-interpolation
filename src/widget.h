@@ -29,7 +29,7 @@ private slots:
     void on_start_PBN_clicked();
 
 private:
-    static const int    BUF_SIZE = 10000;
+    static const int    BUF_SIZE = 100000;
 private:
     Ui::Widget          *ui;
 
@@ -37,6 +37,7 @@ private:
     QString             pathFile_output;
 
     Ipp32fc             *signal_buf;
+    Ipp32fc             *signal_buf_c;
     double              *time_buf;
     int                 Fold_save, Fnew_save;
 
